@@ -1,0 +1,108 @@
+const { Builder, By, Key, until, Actions } = require("selenium-webdriver");
+
+(async function example() {
+  let driver = await new Builder().forBrowser("chrome").build();
+  try {
+    const username = 'lingza55555@gmail.com';
+    const password = 'ling0894725680';
+    
+    await driver.get('https://www.thaiticketmajor.com/index.html');
+    await driver.manage().window().maximize();
+    
+    // คลิกที่ปุ่มเมนู
+    const menuButton = await driver.wait(until.elementIsEnabled(driver.findElement(By.css('body > div.main > header > div.container > div > div.mh-col.col-12.col-xl > div > button'))));
+    if(menuButton){
+      await menuButton.click();
+    }
+
+    // รอให้ Element ช่องกรอกชื่อผู้ใช้และรหัสผ่านปรากฏ
+    const user = await driver.wait(until.elementLocated(By.css('#frm-signin > div.row-form.box-input > div > div:nth-child(1) > input')));
+    const pass = await driver.wait(until.elementLocated(By.css('#frm-signin > div.row-form.box-input > div > div.box-input-item.box-view-password > div > input')));
+
+    // รอให้ปุ่ม Submit เป็นคลิกได้
+    const submitButton = await driver.wait(until.elementIsEnabled(driver.findElement(By.css('#frm-signin > div:nth-child(3) > div > button'))));
+
+    // กรอกชื่อผู้ใช้และรหัสผ่าน
+    if(user){
+      await user.sendKeys(username);
+    }
+    if(pass){
+      await pass.sendKeys(password);
+    }
+
+    // คลิกปุ่ม Submit
+    if(submitButton){
+      await submitButton.click();
+    }
+
+    // รอให้หน้าเว็บโหลดเสร็จ
+    await driver.wait(until.stalenessOf(submitButton));
+
+    // คลิก Element ที่คุณต้องการหลังจากนั้น (ตัวอย่างเช่น Element ชื่อ "got7")
+    const got7 = await driver.wait(until.elementLocated(By.xpath('//*[@id="section-event"]/div/div[2]/div/div/div[1]/div[1]/div/div[3]/div/div[2]/a')));
+    await driver.wait(until.elementIsEnabled(got7));
+    await driver.wait(until.elementIsVisible(got7));
+
+    if(got7){
+      let jsCode = 'document.querySelector("#section-event > div > div.container > div > div > div.tb-item.box-collapse.expand.active > div.row > div > div:nth-child(3) > div > div.box-btn > a").click();';
+      await driver.executeScript(jsCode);
+    }
+    await driver.wait(until.stalenessOf(got7));
+    
+
+    // await driver.wait(until.urlIs('https://www.example.com')); // เช็ค URL เพื่อตรวจสอบว่าหน้าเว็บโหลดเสร็จแล้ว
+    await driver.executeScript('window.scrollBy(0, 1500);');
+    const letgos = await driver.wait(until.elementIsEnabled(driver.findElement(By.css('#ticket > div > div > p > a'))))
+    await driver.wait(until.elementIsVisible(letgos))
+    if(letgos){
+        let JscodeGo = 'document.querySelector("#ticket > div > div > p > a").click();'
+        await driver.executeScript(JscodeGo);
+
+    }
+    await driver.wait(until.stalenessOf(letgos));
+
+    const dream = await driver.wait(until.elementLocated(By.xpath('//*[@id="uMap2Map22"]/area[29]')))
+    await driver.wait(until.elementIsVisible(dream))
+    if(dream){
+      let dream = 'document.querySelector("#uMap2Map22 > area:nth-child(31)").click();'
+     await driver.executeScript(dream)
+    }
+    await driver.wait(until.stalenessOf(dream));
+
+    await driver.executeScript( 'document.querySelector("")')
+
+
+    // const btn = await driver.wait(until.elementIsEnabled(driver.findElement(By.css('#section-event-round > div > div > div.box-event-list > div.body > div > div.col-btn > span > a'))))
+    // await driver.wait(until.elementIsVisible(btn))
+    // let letsgo = true;
+    
+    // while (letsgo) {
+    //   try {
+    //     const btn = await driver.wait(until.elementIsEnabled(driver.findElement(By.css('#section-event-round > div > div > div.box-event-list > div.body > div > div.col-btn > span > a'))))
+    //     await driver.wait(until.elementIsVisible(btn))
+    //     let go = await btn.getAttribute('disabled');
+        
+    //     if (go) {
+    //       letsgo = false;
+    //       await driver.wait(until.elementIsEnabled(btn)); // รอให้ Element เป็นสามารถคลิกได้
+    //       await driver.executeScript('arguments[0].scrollIntoView(true);', btn);
+    //       await btn.click(); // คลิกที่ Element ที่ถูกเคลียร์แล้ว
+    //       break;
+    //     }
+        
+    //     await driver.navigate().refresh(); // Refresh หน้าเว็บเมื่อ Element ไม่สามารถคลิกได้
+    //   } catch (e) {
+    //     // จับข้อผิดพลาดและแสดงข้อความของมัน
+    //     console.log('Error:', e.message);
+    //   }
+    // }
+// await driver.wait(until.stalenessOf(btn));
+
+  
+
+  } catch (err) {
+    console.log(err);
+  } finally {
+    
+  }
+})();
